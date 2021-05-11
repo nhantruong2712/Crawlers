@@ -42,12 +42,18 @@ def find():
 
 	try:
 		kind_of_store_1 = browser.find_element_by_class_name("category-items")
-		kind_of_store_2 = browser.find_element_by_class_name("cuisines-list")
+		try:
+			kind_of_store_2 = browser.find_element_by_class_name("cuisines-list")
+		except:
+			kind_of_store_2 = ""
 		types.append(kind_of_store_1.text + " " + kind_of_store_2.text)
 		print("Types: ", types)
 	except:
 		kind_of_store_1 = browser.find_element_by_class_name("category-items")
-		kind_of_store_2 = browser.find_element_by_class_name("category-cuisines")
+		try:
+			kind_of_store_2 = browser.find_element_by_class_name("category-cuisines")
+		except:
+			kind_of_store_2 = ""
 		types.append(kind_of_store_1.text + " " + kind_of_store_2.text)
 		print("Types: ", types)
 
@@ -93,7 +99,7 @@ def selenium():
 		global browser
 		browser = webdriver.Chrome(executable_path="./chromedriver.exe", chrome_options=options)
 		#for i in range(1, 12):
-		browser.get("https://www.foody.vn/da-nang/food/an-vat-via-he?q=")
+		browser.get("https://www.foody.vn/da-nang/food/cafe?q=")
 		sleep(1)
 
 		login = browser.find_element_by_xpath("/html/body/div[2]/header/div[2]/div/div[6]/div[1]/a/span")
@@ -107,24 +113,27 @@ def selenium():
 		txtPassword.send_keys(Keys.ENTER)
 		sleep(1)
 
-		# for _ in range(3):
-		# 	scroll = browser.find_element_by_tag_name('html')
-		# 	scroll.send_keys(Keys.END)
-		# 	sleep(1)
+		for _ in range(3):
+			scroll = browser.find_element_by_tag_name('html')
+			scroll.send_keys(Keys.END)
+			sleep(1)
+
+		for _ in range(2):
+			scroll = browser.find_element_by_tag_name('html')
+			scroll.send_keys(Keys.PAGE_UP)
 		#
-		# for _ in range(2):
-		# 	scroll = browser.find_element_by_tag_name('html')
-		# 	scroll.send_keys(Keys.PAGE_UP)
-		#
-		for _ in range(85):  # crawl 1000 data
-			element = WebDriverWait(browser, 10).until(
-	 		EC.element_to_be_clickable((By.ID, "scrollLoadingPage"))
-			)
-			element.click()
-			sleep(2)
+		try:
+			for _ in range(32):
+				element = WebDriverWait(browser, 10).until(
+				EC.element_to_be_clickable((By.ID, "scrollLoadingPage"))
+				)
+				element.click()
+				sleep(2)
+		except:
+			pass
 		click_img = browser.find_elements_by_css_selector('.ri-avatar a img')
 		print(len(click_img))
-		for x in range(120, len(click_img)):
+		for x in range(0, len(click_img)):
 			main_window = browser.current_window_handle
 			click_img = browser.find_elements_by_css_selector('.ri-avatar a img')[x]
 			click_img.click()
