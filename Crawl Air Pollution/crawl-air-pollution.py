@@ -10,9 +10,7 @@ date_list = []
 for i in range(delta.days + 1):
 	x = d1 + timedelta(days=i)
 	date_list.append(x)
-date_list.reverse()
 
-# def selenium(user, name_thread):
 def selenium():
 	pm25 = []
 	pm10 = []
@@ -102,6 +100,14 @@ def selenium():
 		for string in info_co:
 			co.append(string)
 			# print("co: ", co)
+
+	pm25 = pm25.reverse()
+	pm10 = pm10.reverse()
+	o3 = o3.reverse()
+	no2 = no2.reverse()
+	so2 = so2.reverse()
+	co = co.reverse()
+
 	a = {'date': date_list, 'PM25': pm25, 'PM10': pm10, 'O3': o3, 'NO2': no2, 'SO2': so2, 'CO': co}
 	df = pd.DataFrame.from_dict(a, orient='index')
 	df = df.transpose()
