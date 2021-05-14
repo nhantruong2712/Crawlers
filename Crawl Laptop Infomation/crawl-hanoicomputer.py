@@ -15,7 +15,7 @@ prices = []
 
 def crawl():
 	for i in range(1, 19):
-		req = requests.get("https://www.hanoicomputer.vn/laptop-may-tinh-xach-tay/1/".format(i))  # URL of the website which you want to scrape
+		req = requests.get("https://www.hanoicomputer.vn/laptop-may-tinh-xach-tay/{}/".format(i))  # URL of the website which you want to scrape
 		content = req.content  # Get the content
 		soup = BeautifulSoup(content, 'html.parser')
 
@@ -26,24 +26,24 @@ def crawl():
 			detail = i.find_all("li")
 			if len(detail) > 3:
 				# print(detail)
-				for i in range(0, len(detail)):
+				for i in range(len(detail)):
 					p = detail[i].text  # Extracting the text from the tags
-					if ("CPU" in p):
-						processors.append(p.replace("CPU: ", ""))
-						# print("processors: ", processors)
-					elif ("RAM" in p):
-						ram.append(p.replace("RAM: ", ""))
-						# print("ram: ", ram)
-					# If RAM is present in the text then append it to the ram list. Similarly do this for the other features as well
-					elif ("HDD" in p or "SSD" in p or "Ổ cứng" in p):
-						storage.append(p.replace("Ổ cứng: ", ""))
-						# print("storage: ", storage)
-					elif ("VGA" in p):
-						card.append(p.replace("VGA: ", ""))
-						# print("card: ", card)
-					elif ("Màn hình" in p):
-						inches.append(p.replace("Màn hình: ", ""))
-						# print("inches: ", inches)
+					if len(p) > 0:
+						if ("CPU" in p):
+							processors.append(p.replace("CPU: ", ""))
+						elif ("RAM" in p):
+							ram.append(p.replace("RAM: ", ""))
+							# print("ram: ", ram)
+						# If RAM is present in the text then append it to the ram list. Similarly do this for the other features as well
+						elif ("HDD" in p or "SSD" in p or "Ổ cứng" in p):
+							storage.append(p.replace("Ổ cứng: ", ""))
+							# print("storage: ", storage)
+						elif ("VGA" in p):
+							card.append(p.replace("VGA: ", ""))
+							# print("card: ", card)
+						elif ("Màn hình" in p):
+							inches.append(p.replace("Màn hình: ", ""))
+							# print("inches: ", inches)
 			else:
 				pass
 		price = soup.find_all('span', class_='p-price js-get-minPrice')
@@ -64,7 +64,7 @@ def save():
 	df = pd.DataFrame.from_dict(a, orient='index')
 	df = df.transpose()
 	dataset = pd.DataFrame(data=df)
-	dataset.to_excel('laptops.xlsx')
+	dataset.to_excel('laptops-hanoicomputer1.xlsx')
 
 if __name__ == '__main__':
 	crawl()
