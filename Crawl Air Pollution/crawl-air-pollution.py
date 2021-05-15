@@ -5,12 +5,15 @@ from datetimerange import DateTimeRange
 import datetime
 
 list = []
+
+
 def dateRange(start, end, step):
-    rangeList = []
-    time_range = DateTimeRange(start, end)
-    for value in time_range.range(datetime.timedelta(days=step)):
-        rangeList.append(value.strftime('%d/%m/%Y'))
-    return rangeList
+	rangeList = []
+	time_range = DateTimeRange(start, end)
+	for value in time_range.range(datetime.timedelta(days=step)):
+		rangeList.append(value.strftime('%d/%m/%Y'))
+	return rangeList
+
 
 for i in range(20, 13, -1):
 	for j in range(12, 1, -1):
@@ -20,10 +23,16 @@ for i in range(20, 13, -1):
 			end = "20{}-{}-{}".format(i, j, end_of_month)
 			list.append(dateRange(start, end, 1))
 		elif j == 2:
-			end_of_month = 28
-			start = "20{}-{}-01".format(i, j)
-			end = "20{}-{}-{}".format(i, j, end_of_month)
-			list.append(dateRange(start, end, 1))
+			if i == 20 or i == 16:
+				end_of_month = 29
+				start = "20{}-{}-01".format(i, j)
+				end = "20{}-{}-{}".format(i, j, end_of_month)
+				list.append(dateRange(start, end, 1))
+			else:
+				end_of_month = 28
+				start = "20{}-{}-01".format(i, j)
+				end = "20{}-{}-{}".format(i, j, end_of_month)
+				list.append(dateRange(start, end, 1))
 		else:
 			end_of_month = 30
 			start = "20{}-{}-01".format(i, j)
@@ -31,6 +40,7 @@ for i in range(20, 13, -1):
 			list.append(dateRange(start, end, 1))
 
 date_list = [item for sublist in list for item in sublist]
+
 
 def selenium():
 	pm25 = []
@@ -57,14 +67,14 @@ def selenium():
 			infos_pm25 = browser.find_elements_by_css_selector("tbody tr:nth-child({}) td.squares svg text".format(i))
 			info_pm25 = [el.text for el in infos_pm25]
 			for string in info_pm25:
-				if string == "-":
+				if string == "-" or len(string) == 0:
 					pm25.append("")
-					# print("pm10: ",pm10)
+				# print("pm10: ",pm10)
 				else:
 					pm25.append(string)
 		except:
 			pass
-			# print("pm25: ",pm25)
+		# print("pm25: ",pm25)
 	pm10_click = browser.find_element_by_xpath("/html/body/div[7]/center[3]/div/div[2]/div[3]/div[2]/center/ul/li[2]")
 	sleep(1)
 	action.move_to_element(pm10_click)
@@ -75,9 +85,9 @@ def selenium():
 			infos_pm10 = browser.find_elements_by_css_selector("tbody tr:nth-child({}) td.squares svg text".format(i))
 			info_pm10 = [el.text for el in infos_pm10]
 			for string in info_pm10:
-				if string == "-":
+				if string == "-" or len(string) == 0:
 					pm10.append("")
-					# print("pm10: ",pm10)
+				# print("pm10: ",pm10)
 				else:
 					pm10.append(string)
 		except:
@@ -93,12 +103,12 @@ def selenium():
 			infos_o3 = browser.find_elements_by_css_selector("tbody tr:nth-child({}) td.squares svg text".format(i))
 			info_o3 = [el.text for el in infos_o3]
 			for string in info_o3:
-				if string == "-":
+				if string == "-" or len(string) == 0:
 					o3.append("")
-					# print("pm10: ",pm10)
+				# print("pm10: ",pm10)
 				else:
 					o3.append(string)
-				# print("o3: ", o3)
+			# print("o3: ", o3)
 		except:
 			pass
 
@@ -113,12 +123,12 @@ def selenium():
 			info_no2 = [el.text for el in infos_no2]
 			# print("monthly: ",monthly)
 			for string in info_no2:
-				if string == "-":
+				if string == "-" or len(string) == 0:
 					no2.append("")
-					# print("pm10: ",pm10)
+				# print("pm10: ",pm10)
 				else:
 					no2.append(string)
-				# print("no2: ", no2)
+			# print("no2: ", no2)
 		except:
 			pass
 
@@ -133,12 +143,12 @@ def selenium():
 			info_so2 = [el.text for el in infos_so2]
 			# print("monthly: ",monthly)
 			for string in info_so2:
-				if string == "-":
+				if string == "-" or len(string) == 0:
 					so2.append("")
-					# print("pm10: ",pm10)
+				# print("pm10: ",pm10)
 				else:
 					so2.append(string)
-				# print("so2: ", so2)
+			# print("so2: ", so2)
 		except:
 			pass
 
@@ -153,12 +163,12 @@ def selenium():
 			info_co = [el.text for el in infos_co]
 			# print("monthly: ",monthly)
 			for string in info_co:
-				if string == "-":
+				if string == "-" or len(string) == 0:
 					co.append("")
-					# print("pm10: ",pm10)
+				# print("pm10: ",pm10)
 				else:
 					co.append(string)
-				# print("co: ", co)
+			# print("co: ", co)
 		except:
 			pass
 
